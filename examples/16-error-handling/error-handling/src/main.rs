@@ -1,8 +1,22 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader};
+use std::env;
 
 fn main() {
-    let file = File::open("non_existent_file.txt");
+    let arguments = env::args().collect::<Vec<_>>();
+
+    if arguments.len() != 2 {
+        println!("Usage: {} <filename>", arguments[0]);
+        return;
+    }
+
+    let path = &arguments[1];
+        if path.is_empty() {
+        println!("Filename cannot be empty");
+        return;
+    }
+
+    let file = File::open(path);
     let file = match file {
         Ok(file) => file,
         Err(error) => {
